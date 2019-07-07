@@ -78,7 +78,7 @@ class Home extends React.Component {
               image={`${IMAGE_URL}${BACKDROP_SIZE}${this.state.heroImage.backdrop_path}`}
               text={this.state.heroImage.overview}
             />
-            <SearchBar />
+            <SearchBar callback={this.searchItems}/>
           </div>
         ) : null}
         <FourColGrid />
