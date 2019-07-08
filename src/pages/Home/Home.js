@@ -44,7 +44,7 @@ class Home extends React.Component {
       endpoint = `${URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${this.state
         .currentPage + 1}`;
     } else {
-      endpoint = `${URL}search/move?api_key=${API_KEY}&language=en-US&query=${
+      endpoint = `${URL}search/movie?api_key=${API_KEY}&language=en-US&query=${
         this.state.searchTerm
       }&page=${this.state.currentPage + 1}`;
     }
