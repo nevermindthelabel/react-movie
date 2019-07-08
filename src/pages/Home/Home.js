@@ -7,7 +7,6 @@ import { API_KEY, URL, BACKDROP_SIZE, POSTER_SIZE, IMAGE_URL } from '../../confi
 import MovieThumb from '../../components/elements/MovieThumb/MovieThumb';
 import Spinner from '../../components/elements/Spinner/Spinner';
 import './Home.css';
-
 class Home extends React.Component {
   state = {
     movies: [],
@@ -29,15 +28,14 @@ class Home extends React.Component {
       movies: [],
       loading: true,
       searchTerm
-    })
+    });
     if (searchTerm === '') {
       endpoint = `${URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
     } else {
-      endpoint = `${URL}search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerm}`
+      endpoint = `${URL}search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerm}`;
     }
-    this.fetchItems(endpoint)
-  }
-
+    this.fetchItems(endpoint);
+  };
 
   loadMoreMovies = () => {
     let endpoint = '';
@@ -78,10 +76,29 @@ class Home extends React.Component {
               image={`${IMAGE_URL}${BACKDROP_SIZE}${this.state.heroImage.backdrop_path}`}
               text={this.state.heroImage.overview}
             />
-            <SearchBar callback={this.searchItems}/>
+            <SearchBar callback={this.searchItems} />
           </div>
         ) : null}
-        <FourColGrid />
+        <div className="rmdb-home-grid">
+          <FourColGrid
+            header={this.state.searchTerm ? 'Search Result' : 'Popular Movies'}
+            loading={this.state.loading}
+          >
+            {this.state.movies.map((movie, i) => (
+              <MovieThumb
+                key={movie.id}
+                clickable={true}
+                image={
+                  movie.poster_path
+                    ? `${IMAGE_URL}${POSTER_SIZE}${movie.poster_path}`
+                    : '../../../public/images/no_image.jpg'
+                }
+                movidId={movie.id}
+                movieName={movie.original_title}
+              />
+            ))}
+          </FourColGrid>
+        </div>
         <Spinner />
         <LoadMoreBtn />
         Home
