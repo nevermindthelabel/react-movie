@@ -93,7 +93,7 @@ class Home extends React.Component {
                     ? `${IMAGE_URL}${POSTER_SIZE}${movie.poster_path}`
                     : './images/no_image.jpg'
                 }
-                movidId={movie.id}
+                movieId={movie.id}
                 movieName={movie.original_title}
               />
             ))}
