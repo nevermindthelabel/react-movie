@@ -6,6 +6,7 @@ import LoadMoreBtn from '../../components/elements/LoadMoreBtn/LoadMoreBtn';
 import { API_KEY, URL, BACKDROP_SIZE, POSTER_SIZE, IMAGE_URL } from '../../config';
 import MovieThumb from '../../components/elements/MovieThumb/MovieThumb';
 import Spinner from '../../components/elements/Spinner/Spinner';
+// import NoImage from '../../images/no_image.jpg';
 import './Home.css';
 class Home extends React.Component {
   state = {
@@ -91,7 +92,7 @@ class Home extends React.Component {
                 image={
                   movie.poster_path
                     ? `${IMAGE_URL}${POSTER_SIZE}${movie.poster_path}`
-                    : './images/no_image.jpg'
+                    : './no_image.jpg'
                 }
                 movieId={movie.id}
                 movieName={movie.original_title}
