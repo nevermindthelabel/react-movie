@@ -91,17 +91,18 @@ class Home extends React.Component {
                 image={
                   movie.poster_path
                     ? `${IMAGE_URL}${POSTER_SIZE}${movie.poster_path}`
-                    : '../../../public/images/no_image.jpg'
+                    : './images/no_image.jpg'
                 }
                 movidId={movie.id}
                 movieName={movie.original_title}
               />
             ))}
           </FourColGrid>
+          {this.state.loading ? <Spinner /> : null}
+          {this.state.currentPage <= this.state.totalPages && !this.state.loading ? (
+            <LoadMoreBtn text="Load More" onClick={this.loadMoreMovies} />
+          ) : null}
         </div>
-        <Spinner />
-        <LoadMoreBtn />
-        Home
       </div>
     );
   }
