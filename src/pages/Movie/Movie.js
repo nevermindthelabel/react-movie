@@ -6,6 +6,7 @@ import MovieInfoBar from '../../components/elements/MovieInfo/MovieInfoBar';
 import FourColGrid from '../../components/elements/FourColGrid/FourColGrid';
 import Actor from '../../components/elements/Actor/Actor';
 import Spinner from '../../components/elements/Spinner/Spinner';
+import './Movie.css'
 class Movie extends Component {
   state = {
 
