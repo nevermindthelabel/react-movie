@@ -4,6 +4,7 @@ import FontAwesome from 'react-fontawesome';
 import MovieThumb from '../../elements/MovieThumb/MovieThumb';
 
 const MovieInfo = props => {
+  console.log(props)
   return (
     <div
       className="rmdb-movieinfo"
@@ -18,7 +19,7 @@ const MovieInfo = props => {
           <MovieThumb
             image={
               props.movie.poster_path
-                ? `${IMAGE_URL}${POSTER_SIZE}${props.image.poster_path}`
+                ? `${IMAGE_URL}${POSTER_SIZE}/${props.poster_path}`
                 : './images/no_image.jpg'
             }
             clickable={false}
