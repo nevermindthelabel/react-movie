@@ -11,7 +11,7 @@ const HeroImage = ({ image, title, text }) => {
       }}
     >
       <div className="rmdb-heroimage-content">
-        <div className="rmdb-herimage-text">
+        <div className="rmdb-heroimage-text">
           <h1>{title}</h1>
           <p>{text}</p>
         </div>
