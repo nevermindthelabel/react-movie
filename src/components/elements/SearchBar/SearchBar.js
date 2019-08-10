@@ -23,7 +23,7 @@ export default class SearchBar extends React.Component {
   render() {
     return (
       <div className="rmdb-searchbar">
-        <div className="rmdb-serchbar-content">
+        <div className="rmdb-searchbar-content">
           <FontAwesome className="rmdb-fa-search" name="search" size="2x" />
           <input
             type="text"
