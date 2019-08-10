@@ -19,7 +19,7 @@ const MovieInfo = props => {
           <MovieThumb
             image={
               props.movie.poster_path
-                ? `${IMAGE_URL}${POSTER_SIZE}/${props.poster_path}`
+                ? `${IMAGE_URL}${POSTER_SIZE}${props.movie.poster_path}`
                 : './images/no_image.jpg'
             }
             clickable={false}
