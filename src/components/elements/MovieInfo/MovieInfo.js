@@ -2,6 +2,7 @@ import React from 'react';
 import { IMAGE_URL, POSTER_SIZE, BACKDROP_SIZE } from '../../../config';
 import FontAwesome from 'react-fontawesome';
 import MovieThumb from '../../elements/MovieThumb/MovieThumb';
+import './MovieInfo.css'
 
 const MovieInfo = props => {
   console.log(props)
