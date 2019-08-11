@@ -69,9 +69,12 @@ class Home extends React.Component {
             currentPage: result.page,
             totalPages: result.total_pages
           },
+          // Callback function to add stringified version of state into local storage
           () => {
-            // Callback function to add stringified version of state into local storage
-            localStorage.setItem('CurrentState', JSON.stringify(this.state));
+            // Don't save a search in local storage
+            if (this.state.searchTerm === '') {
+              localStorage.setItem('CurrentState', JSON.stringify(this.state));
+            }
           }
         );
       })
