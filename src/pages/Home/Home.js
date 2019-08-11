@@ -57,25 +57,30 @@ class Home extends React.Component {
     this.fetchItems(endpoint);
   };
 
+  // added async/await
   fetchItems = async endpoint => {
     const { movies, heroImage, searchTerm } = this.state;
     const result = await (await fetch(endpoint)).json();
-    this.setState(
-      {
-        movies: [...movies, ...result.results],
-        heroImage: heroImage || result.results[0],
-        loading: false,
-        currentPage: result.page,
-        totalPages: result.total_pages
-      },
-      // Callback function to add stringified version of state into local storage
-      () => {
-        // Don't save a search in local storage
-        if (searchTerm === '') {
-          localStorage.setItem('CurrentState', JSON.stringify(this.state));
+    try {
+      this.setState(
+        {
+          movies: [...movies, ...result.results],
+          heroImage: heroImage || result.results[0],
+          loading: false,
+          currentPage: result.page,
+          totalPages: result.total_pages
+        },
+        // Callback function to add stringified version of state into local storage
+        () => {
+          // Don't save a search in local storage
+          if (searchTerm === '') {
+            localStorage.setItem('CurrentState', JSON.stringify(this.state));
+          }
         }
-      }
-    );
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // fetchItems = endpoint => {
