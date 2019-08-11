@@ -6,7 +6,6 @@ import LoadMoreBtn from '../../components/elements/LoadMoreBtn/LoadMoreBtn';
 import { API_KEY, URL, BACKDROP_SIZE, POSTER_SIZE, IMAGE_URL } from '../../config';
 import MovieThumb from '../../components/elements/MovieThumb/MovieThumb';
 import Spinner from '../../components/elements/Spinner/Spinner';
-// import NoImage from '../../images/no_image.jpg';
 import './Home.css';
 class Home extends React.Component {
   state = {
@@ -56,13 +55,18 @@ class Home extends React.Component {
     fetch(endpoint)
       .then(result => result.json())
       .then(result => {
-        this.setState({
-          movies: [...this.state.movies, ...result.results],
-          heroImage: this.state.heroImage || result.results[0],
-          loading: false,
-          currentPage: result.page,
-          totalPages: result.total_pages
-        });
+        this.setState(
+          {
+            movies: [...this.state.movies, ...result.results],
+            heroImage: this.state.heroImage || result.results[0],
+            loading: false,
+            currentPage: result.page,
+            totalPages: result.total_pages
+          },
+          () => {
+            localStorage.setItem('CurrentState', JSON.stringify(this.state));
+          }
+        );
       })
       .catch(error => console.error('Error', error));
   };
