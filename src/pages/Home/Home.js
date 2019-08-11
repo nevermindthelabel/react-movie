@@ -57,29 +57,50 @@ class Home extends React.Component {
     this.fetchItems(endpoint);
   };
 
-  fetchItems = endpoint => {
-    fetch(endpoint)
-      .then(result => result.json())
-      .then(result => {
-        this.setState(
-          {
-            movies: [...this.state.movies, ...result.results],
-            heroImage: this.state.heroImage || result.results[0],
-            loading: false,
-            currentPage: result.page,
-            totalPages: result.total_pages
-          },
-          // Callback function to add stringified version of state into local storage
-          () => {
-            // Don't save a search in local storage
-            if (this.state.searchTerm === '') {
-              localStorage.setItem('CurrentState', JSON.stringify(this.state));
-            }
-          }
-        );
-      })
-      .catch(error => console.error('Error', error));
+  fetchItems = async endpoint => {
+    const { movies, heroImage, searchTerm } = this.state;
+    const result = await (await fetch(endpoint)).json();
+    this.setState(
+      {
+        movies: [...movies, ...result.results],
+        heroImage: heroImage || result.results[0],
+        loading: false,
+        currentPage: result.page,
+        totalPages: result.total_pages
+      },
+      // Callback function to add stringified version of state into local storage
+      () => {
+        // Don't save a search in local storage
+        if (searchTerm === '') {
+          localStorage.setItem('CurrentState', JSON.stringify(this.state));
+        }
+      }
+    );
   };
+
+  // fetchItems = endpoint => {
+  //   fetch(endpoint)
+  //     .then(result => result.json())
+  //     .then(result => {
+  //       this.setState(
+  //         {
+  //           movies: [...this.state.movies, ...result.results],
+  //           heroImage: this.state.heroImage || result.results[0],
+  //           loading: false,
+  //           currentPage: result.page,
+  //           totalPages: result.total_pages
+  //         },
+  //         // Callback function to add stringified version of state into local storage
+  //         () => {
+  //           // Don't save a search in local storage
+  //           if (this.state.searchTerm === '') {
+  //             localStorage.setItem('CurrentState', JSON.stringify(this.state));
+  //           }
+  //         }
+  //       );
+  //     })
+  //     .catch(error => console.error('Error', error));
+  // };
 
   render() {
     // ES6 destructuring state
@@ -97,10 +118,7 @@ class Home extends React.Component {
           </div>
         ) : null}
         <div className="rmdb-home-grid">
-          <FourColGrid
-            header={searchTerm ? 'Search Result' : 'Popular Movies'}
-            loading={loading}
-          >
+          <FourColGrid header={searchTerm ? 'Search Result' : 'Popular Movies'} loading={loading}>
             {movies.map((movie, i) => (
               <MovieThumb
                 key={movie.id}
