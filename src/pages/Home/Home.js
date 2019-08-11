@@ -82,24 +82,26 @@ class Home extends React.Component {
   };
 
   render() {
+    // ES6 destructuring state
+    const { heroImage, movies, loading, currentPage, totalPages, searchTerm } = this.state;
     return (
       <div className="rmdb-home">
-        {this.state.heroImage ? (
+        {heroImage ? (
           <div>
             <HeroImage
-              title={this.state.heroImage.original_title}
-              image={`${IMAGE_URL}${BACKDROP_SIZE}${this.state.heroImage.backdrop_path}`}
-              text={this.state.heroImage.overview}
+              title={heroImage.original_title}
+              image={`${IMAGE_URL}${BACKDROP_SIZE}${heroImage.backdrop_path}`}
+              text={heroImage.overview}
             />
             <SearchBar callback={this.searchItems} />
           </div>
         ) : null}
         <div className="rmdb-home-grid">
           <FourColGrid
-            header={this.state.searchTerm ? 'Search Result' : 'Popular Movies'}
-            loading={this.state.loading}
+            header={searchTerm ? 'Search Result' : 'Popular Movies'}
+            loading={loading}
           >
-            {this.state.movies.map((movie, i) => (
+            {movies.map((movie, i) => (
               <MovieThumb
                 key={movie.id}
                 clickable={true}
@@ -113,8 +115,8 @@ class Home extends React.Component {
               />
             ))}
           </FourColGrid>
-          {this.state.loading ? <Spinner /> : null}
-          {this.state.currentPage <= this.state.totalPages && !this.state.loading ? (
+          {loading ? <Spinner /> : null}
+          {currentPage <= totalPages && !loading ? (
             <LoadMoreBtn text="Load More" onClick={this.loadMoreMovies} />
           ) : null}
         </div>
