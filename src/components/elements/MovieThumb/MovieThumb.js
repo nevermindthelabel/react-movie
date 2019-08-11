@@ -3,16 +3,15 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './MovieThumb.css';
 
-const MovieThumb = props => {
-  console.log(props)
+const MovieThumb = ({ image, movieId, movieName, clickable }) => {
   return (
     <div className="rmdb-moviethumb">
-      {props.clickable ? (
-        <Link to={{ pathname: `/movie/${props.movieId}`, movieName: `${props.movieName}` }}>
-          <img src={props.image} alt={props.movieName} />
+      {clickable ? (
+        <Link to={{ pathname: `/movie/${movieId}`, movieName: `${movieName}` }}>
+          <img src={image} alt={movieName} />
         </Link>
       ) : (
-        <img src={props.image} alt={props.movieName} />
+        <img src={image} alt={movieName} />
       )}
     </div>
   );
