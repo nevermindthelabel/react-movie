@@ -43,7 +43,6 @@ class Movie extends Component {
             }/credits?api_key=${API_KEY}`;
             fetch(endpoint)
               .then(result => result.json())
-              .then(console.log(result))
               .then(result => {
                 const directors = result.crew.filter(member => member.job === 'Director');
                 this.setState(
@@ -64,30 +63,31 @@ class Movie extends Component {
   };
 
   render() {
+    const { movie, actors, directors, loading } = this.state;
     return (
       <div className="rmdb-movie">
-        {this.state.movie ? (
+        {movie ? (
           <div>
             <Navigation movie={this.props.location.movieName} />
-            <MovieInfo movie={this.state.movie} directors={this.state.directors} />
+            <MovieInfo movie={movie} directors={directors} />
             <MovieInfoBar
-              time={this.state.movie.runtime}
-              budget={this.state.movie.budget}
-              revenue={this.state.movie.revenue}
+              time={movie.runtime}
+              budget={movie.budget}
+              revenue={movie.revenue}
             />
           </div>
         ) : null}
-        {this.state.actors ? (
+        {actors ? (
           <div className="rmdb-movie-grid">
             <FourColGrid header={'Actors'}>
-              {this.state.actors.map((actor, index) => {
+              {actors.map((actor, index) => {
                 return <Actor key={index} actor={actor} />;
               })}
             </FourColGrid>
           </div>
         ) : null}
-        {!this.state.actors && !this.state.loading ? <h1>No Movie Found!</h1> : null}
-        {this.state.loading ? <Spinner /> : null}
+        {!actors && !loading ? <h1>No Movie Found!</h1> : null}
+        {loading ? <Spinner /> : null}
       </div>
     );
   }
