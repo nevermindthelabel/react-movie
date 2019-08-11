@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './FourColGrid.css';
 
-const FourColGrid = props => {
+const FourColGrid = ({ children, header, loading }) => {
   const renderElements = () => {
-    const gridElements = props.children.map((child, i) => {
+    const gridElements = children.map((child, i) => {
       return (
         <div key={i} className="rmdb-grid-element">
           {child}
@@ -15,7 +15,7 @@ const FourColGrid = props => {
   };
   return (
     <div className="rmdb-grid">
-      {props.header && !props.loading ? <h1>{props.header}</h1> : null}
+      {header && !loading ? <h1>{header}</h1> : null}
       <div className="rmdb-grid-content">{renderElements()}</div>
     </div>
   );
