@@ -17,11 +17,17 @@ class Home extends React.Component {
     searchTerm: ''
   };
   componentDidMount() {
-    this.setState({ loading: true });
-    const endpoint = `${URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
-    this.fetchItems(endpoint);
+    // check for state in local storage
+    if (localStorage.getItem('CurrentState')) {
+      const state = JSON.parse(localStorage.getItem('CurrentState'));
+      this.setState({ ...state });
+    } else {
+      // if no movies already in state, make API call to get them
+      this.setState({ loading: true });
+      const endpoint = `${URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
+      this.fetchItems(endpoint);
+    }
   }
-
   searchItems = searchTerm => {
     let endpoint = '';
     this.setState({
@@ -64,6 +70,7 @@ class Home extends React.Component {
             totalPages: result.total_pages
           },
           () => {
+            // Callback function to add stringified version of state into local storage
             localStorage.setItem('CurrentState', JSON.stringify(this.state));
           }
         );
