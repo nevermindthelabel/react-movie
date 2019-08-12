@@ -28,39 +28,67 @@ class Movie extends Component {
       this.fetchItems(endpoint);
     }
   }
-  fetchItems = endpoint => {
-    fetch(endpoint)
-      .then(result => result.json())
-      .then(result => {
-        if (result.status_code) {
-          // make sure there is a valid response
-          this.setState({ loading: false });
-        } else {
-          this.setState({ movie: result }, () => {
-            // put actors and directors in state with callback function
-            const endpoint = `${URL}movie/${
-              this.props.match.params.movieId
-            }/credits?api_key=${API_KEY}`;
-            fetch(endpoint)
-              .then(result => result.json())
-              .then(result => {
-                const directors = result.crew.filter(member => member.job === 'Director');
-                this.setState(
-                  {
-                    actors: result.cast,
-                    directors,
-                    loading: false
-                  },
-                  () => {
-                    localStorage.setItem(`${this.props.match.params.movieId}`, JSON.stringify(this.state));
-                  }
-                );
-              });
-          });
-        }
-      })
-      .catch(error => console.error(`Error: ${error.message}`));
+
+  fetchItems = async endpoint => {
+    const { movieId } = this.props.match.params;
+    try {
+      const result = await (await fetch(endpoint)).json();
+      if (result.status_code) {
+        // make sure there is a valid response
+        this.setState({ loading: false });
+      } else {
+        this.setState({ movie: result });
+        // put actors and directors in state with callback function
+        const creditsEndpoint = `${URL}movie/${movieId}/credits?api_key=${API_KEY}`;
+        const creditsResult = await (await fetch(creditsEndpoint)).json();
+        const directors = creditsResult.crew.filter(member => member.job === 'Director');
+        this.setState({
+          actors: creditsResult.cast,
+          directors,
+          loading: false
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  // fetchItems = endpoint => {
+  //   fetch(endpoint)
+  //     .then(result => result.json())
+  //     .then(result => {
+  //       if (result.status_code) {
+  //         // make sure there is a valid response
+  //         this.setState({ loading: false });
+  //       } else {
+  //         this.setState({ movie: result }, () => {
+  //           // put actors and directors in state with callback function
+  //           const endpoint = `${URL}movie/${
+  //             this.props.match.params.movieId
+  //           }/credits?api_key=${API_KEY}`;
+  //           fetch(endpoint)
+  //             .then(result => result.json())
+  //             .then(result => {
+  //               const directors = result.crew.filter(member => member.job === 'Director');
+  //               this.setState(
+  //                 {
+  //                   actors: result.cast,
+  //                   directors,
+  //                   loading: false
+  //                 },
+  //                 () => {
+  //                   localStorage.setItem(
+  //                     `${this.props.match.params.movieId}`,
+  //                     JSON.stringify(this.state)
+  //                   );
+  //                 }
+  //               );
+  //             });
+  //         });
+  //       }
+  //     })
+  //     .catch(error => console.error(`Error: ${error.message}`));
+  // };
 
   render() {
     const { movie, actors, directors, loading } = this.state;
@@ -70,11 +98,7 @@ class Movie extends Component {
           <div>
             <Navigation movie={this.props.location.movieName} />
             <MovieInfo movie={movie} directors={directors} />
-            <MovieInfoBar
-              time={movie.runtime}
-              budget={movie.budget}
-              revenue={movie.revenue}
-            />
+            <MovieInfoBar time={movie.runtime} budget={movie.budget} revenue={movie.revenue} />
           </div>
         ) : null}
         {actors ? (
