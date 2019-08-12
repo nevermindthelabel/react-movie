@@ -16,17 +16,11 @@ class Movie extends Component {
   };
 
   componentDidMount() {
-    if (localStorage.getItem(`${this.props.match.params.movieId}`)) {
-      const state = JSON.parse(`${this.props.match.params.movieId}`);
-      this.setState({ ...state });
-    } else {
-      this.setState({ loading: true });
-      // get the movie loaded
-      const endpoint = `${URL}movie/${
-        this.props.match.params.movieId
-      }?api_key=${API_KEY}&language=en-US`;
-      this.fetchItems(endpoint);
-    }
+    const { movieId } = this.props.match.params;
+    this.setState({ loading: true });
+    // get the movie loaded
+    const endpoint = `${URL}movie/${movieId}?api_key=${API_KEY}&language=en-US`;
+    this.fetchItems(endpoint);
   }
 
   fetchItems = async endpoint => {
