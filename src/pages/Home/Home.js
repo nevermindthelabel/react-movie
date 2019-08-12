@@ -112,18 +112,21 @@ class Home extends React.Component {
     const { heroImage, movies, loading, currentPage, totalPages, searchTerm } = this.state;
     return (
       <div className="rmdb-home">
-        {heroImage ? (
+        {heroImage && !searchTerm ? (
           <div>
             <HeroImage
               title={heroImage.original_title}
               image={`${IMAGE_URL}${BACKDROP_SIZE}${heroImage.backdrop_path}`}
               text={heroImage.overview}
             />
-            <SearchBar callback={this.searchItems} />
           </div>
         ) : null}
+        <SearchBar callback={this.searchItems} />
         <div className="rmdb-home-grid">
-          <FourColGrid header={searchTerm ? 'Search Result' : 'Popular Movies'} loading={loading}>
+          <FourColGrid
+            header={searchTerm ? 'Search Result' : 'Popular Movies'}
+            loading={loading}
+          >
             {movies.map((movie, i) => (
               <MovieThumb
                 key={movie.id}
