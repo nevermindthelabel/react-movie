@@ -142,7 +142,7 @@ class Home extends React.Component {
             ))}
           </FourColGrid>
           {loading ? <Spinner /> : null}
-          {currentPage <= totalPages && !loading ? (
+          {currentPage < totalPages && !loading ? (
             <LoadMoreBtn text="Load More" onClick={this.loadMoreMovies} />
           ) : null}
         </div>
