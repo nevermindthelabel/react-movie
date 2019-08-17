@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import HeroImage from '../../components/elements/HeroImage/HeroImage';
 import SearchBar from '../../components/elements/SearchBar/SearchBar';
 import FourColGrid from '../../components/elements/FourColGrid/FourColGrid';
@@ -6,45 +6,13 @@ import LoadMoreBtn from '../../components/elements/LoadMoreBtn/LoadMoreBtn';
 import { API_KEY, URL, BACKDROP_SIZE, POSTER_SIZE, IMAGE_URL } from '../../config';
 import MovieThumb from '../../components/elements/MovieThumb/MovieThumb';
 import Spinner from '../../components/elements/Spinner/Spinner';
+import { useFetchMovies } from './customHook';
 import './Home.css';
 
 const popularMovies = `${URL}movie/popular?api_key=${API_KEY}`;
 
 const Home = () => {
-  const [state, setState] = useState({ movies: [] });
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-
-  const fetchMovies = async endpoint => {
-    setIsError(false);
-    setIsLoading(true);
-    // use URL search params to get search params
-    const params = new URLSearchParams(endpoint);
-    if (!params.get('page')) {
-      setState(prev => ({
-        ...prev,
-        movies: [],
-        searchTerm: params.get('query')
-      }));
-    }
-    try {
-      const result = await (await fetch(endpoint)).json();
-      setState(prev => ({
-        ...prev,
-        movies: [...prev.movies, ...result.results],
-        heroImage: prev.heroImage || result.results[0],
-        currentPage: result.page,
-        totalPages: result.total_pages
-      }));
-    } catch (error) {
-      setIsError(true);
-    }
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    fetchMovies(`${popularMovies}`);
-  }, []);
+  const [{ state, isLoading }, fetchMovies] = useFetchMovies();
 
   const searchItems = searchTerm => {
     let endpoint = `${URL}search/movie?api_key=${API_KEY}&query=${searchTerm}`;
@@ -60,9 +28,8 @@ const Home = () => {
     if (!searchTerm) {
       endpoint = `${URL}movie/popular?api_key=${API_KEY}&page=${currentPage + 1}`;
     } else {
-      endpoint = `${URL}search/movie?api_key=${API_KEY}&query=${
-        searchTerm
-      }&page=${currentPage + 1}`;
+      endpoint = `${URL}search/movie?api_key=${API_KEY}&query=${searchTerm}&page=${currentPage +
+        1}`;
     }
     fetchMovies(endpoint);
   };
@@ -81,10 +48,7 @@ const Home = () => {
       ) : null}
       <SearchBar callback={searchItems} />
       <div className="rmdb-home-grid">
-        <FourColGrid
-          header={searchTerm ? 'Search Result' : 'Popular Movies'}
-          loading={isLoading}
-        >
+        <FourColGrid header={searchTerm ? 'Search Result' : 'Popular Movies'} loading={isLoading}>
           {movies.map((movie, i) => (
             <MovieThumb
               key={movie.id}
