@@ -67,24 +67,25 @@ const Home = () => {
     fetchMovies(endpoint);
   };
 
+  const { heroImage, searchTerm, movies, currentPage, totalPages } = state;
   return (
     <div className="rmdb-home">
-      {state.heroImage ? (
+      {heroImage ? (
         <div>
           <HeroImage
-            title={state.heroImage.original_title}
-            image={`${IMAGE_URL}${BACKDROP_SIZE}${state.heroImage.backdrop_path}`}
-            text={state.heroImage.overview}
+            title={heroImage.original_title}
+            image={`${IMAGE_URL}${BACKDROP_SIZE}${heroImage.backdrop_path}`}
+            text={heroImage.overview}
           />
         </div>
       ) : null}
       <SearchBar callback={searchItems} />
       <div className="rmdb-home-grid">
         <FourColGrid
-          header={state.searchTerm ? 'Search Result' : 'Popular Movies'}
+          header={searchTerm ? 'Search Result' : 'Popular Movies'}
           loading={isLoading}
         >
-          {state.movies.map((movie, i) => (
+          {movies.map((movie, i) => (
             <MovieThumb
               key={movie.id}
               clickable={true}
@@ -99,7 +100,7 @@ const Home = () => {
           ))}
         </FourColGrid>
         {isLoading ? <Spinner /> : null}
-        {state.currentPage < state.totalPages && !isLoading ? (
+        {currentPage < totalPages && !isLoading ? (
           <LoadMoreBtn text="Load More" onClick={loadMoreMovies} />
         ) : null}
       </div>
