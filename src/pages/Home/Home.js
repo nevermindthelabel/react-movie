@@ -8,7 +8,7 @@ import MovieThumb from '../../components/elements/MovieThumb/MovieThumb';
 import Spinner from '../../components/elements/Spinner/Spinner';
 import './Home.css';
 
-const popularMovies = `${URL}movie/popular?api_key=${API_KEY}&page=1`;
+const popularMovies = `${URL}movie/popular?api_key=${API_KEY}`;
 
 const Home = () => {
   const [state, setState] = useState({ movies: [] });
