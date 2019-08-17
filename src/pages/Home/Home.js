@@ -70,7 +70,7 @@ const Home = () => {
   const { heroImage, searchTerm, movies, currentPage, totalPages } = state;
   return (
     <div className="rmdb-home">
-      {heroImage ? (
+      {heroImage && !searchTerm ? (
         <div>
           <HeroImage
             title={heroImage.original_title}
